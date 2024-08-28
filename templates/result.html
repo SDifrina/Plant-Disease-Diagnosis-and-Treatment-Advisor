@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Classifier Result</title>
+    <style>
+        /* CSS for centering elements and adding a background image */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('static\\images\\bg4.jpeg'); /* Replace with your image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #008000; /* Set text color for readability */
+        }
+        
+        h1, p, a {
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%; /* Ensure image doesn't overflow its container */
+        }
+        /* Add this CSS code to your existing styles */
+h1 {
+    font-size: 3em; /* Adjust the font size as needed */
+}
+
+p {
+    font-size: 1.7em; /* Adjust the font size as needed */
+}
+
+a {
+    font-size: 1.3em; /* Adjust the font size as needed */
+}
+
+    </style>
+</head>
+<body>
+    
+    <h1>Plant Disease Prediction Result</h1>
+    
+    <p>Predicted Disease : {{ result1 }}</p>
+    <p>Recommended Treatment : {{ result2 }}</p>
+    <a href="/">Back to Upload</a>
+</body>
+</html>

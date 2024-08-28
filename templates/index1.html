@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANT DISEASE CLASSIFIER</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Loads the external CSS stylesheet for the webpage -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Center the entire page contents */
+        /* Center the entire page contents */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Center the form horizontally */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style the box below the browse button */
+.box {
+    width: 224px; /* Adjust the width as needed */
+    height: 224px; /* Adjust the height as needed */
+    border: 1px solid #ccc;
+    margin-top: 20px; /* Add some top margin to create space between the browse button and the box */
+}
+
+/* Style the Predict button */
+#predictButton {
+    margin-top: 20px; /* Add some top margin to create space between the box and the Predict button */
+}
+
+    
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Plant Disease Classifier <span class="fa fa-leaf"></span></h1>
+    <hr>
+
+    <form method="post" action="/" enctype="multipart/form-data">
+        <!-- Add the input element for uploading an image -->
+        <input type="file" id="uploadImage" name="file" accept="image/*" onchange="displayImage()">
+
+        <!-- Replace the input element with a Predict button -->
+        <button type="submit" id="predictButton">Predict</button>
+    </form>
+    
+    <div class="row">
+        <div class="box">
+            <!-- Image Box which displays the Uploaded image -->
+            <img src="" alt="" id="image" width="224" height="224">
+        </div>
+
+        <div class="box box-result">
+            <!-- Simple div which shows the Model Loading Status -->
+            <div class="init_status"></div>
+            
+            <div class="accuracy">
+                <!-- Simple progress bar which indicates the accuracy for the predicted class -->
+                <div class="progress" id="progress">
+                    <div class="inner">
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.0.1/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
+    <!-- Load the External Javascript file for web app's functionality -->
+    <script src="script.js"></script>
+
+    <script>
+        // Define the predictImage function for the Predict button
+        function predictImage() {
+            const inputElement = document.getElementById('uploadImage');
+          
+            // Check if a file is selected
+            if (inputElement.files && inputElement.files[0]) {
+                const formData = new FormData();
+                formData.append('file', inputElement.files[0]);
+
+                // Send the image data to the server
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    // Handle the server response here (e.g., display a message to the user)
+                    alert(result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert('Please select an image before predicting.');
+            }
+        }
+
+        // Define the displayImage function to show the selected image
+        function displayImage() {
+            const inputElement = document.getElementById('uploadImage');
+            const imageElement = document.getElementById('image');
+
+            // Check if a file is selected
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Set the source of the image element to the selected image
+                    imageElement.src = e.target.result;
+                };
+
+                // Read the selected file as a data URL
+                reader.readAsDataURL(inputElement.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
+

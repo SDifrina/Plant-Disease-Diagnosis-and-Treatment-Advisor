@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANT DISEASE CLASSIFIER</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Loads the external CSS stylesheet for the webpage -->
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        /* CSS for centering elements and adding a background image */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('static\\images\\bg4.jpeg'); /* Replace with your image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #008000; /* Set text color for readability */
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Added this line to change the direction of items */
+            text-align: center; /* Center the text */
+        }
+
+        /* Add space between form elements */
+        form {
+            margin-bottom: 20px; /* Add margin at the bottom of the form */
+        }
+
+        #uploadImage {
+            margin-bottom: 10px; /* Add margin at the bottom of the upload input */
+        }
+        #predictButton{
+        background-color: #008000;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        }
+        /*#predictButton {
+            margin-top: 30px;  Add more margin at the top of the predict button 
+        }*/
+
+        h1 {
+            font-size: 3em;
+             /* Increase the font size of the title */
+        }
+
+        .box {
+            position: relative; /* Added to allow absolute positioning inside */
+        }
+
+        /*predictButton {
+            position: absolute;
+            bottom: 0;
+        }*/
+
+        /* Added style for the box-result */
+        .box-result {
+            margin-top: 30px; /* Add margin at the top of the box-result */
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style = "font-family :'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif" >Plant Disease Classifier <span class="fa fa-leaf"></span></h1>
+    <hr>
+
+
+    <div class="row">
+        <form method="post" action="/" enctype="multipart/form-data">
+            <!-- Add the input element for uploading an image -->
+            <input type="file" id="uploadImage" name="file" accept="image/*" onchange="displayImage()"><br>
+
+        <div class="box">
+            <!-- Image Box which displays the Uploaded image -->
+            <img src="" alt="" id="image" width="224" height="224">
+            <!-- Replace the input element with a Predict button -->
+            <br><br><br>
+            <button type="submit" id="predictButton">Predict</button>
+        </div>
+        </form>
+    </div>
+
+    <div class="box box-result">
+        <!-- Simple div which shows the Model Loading Status -->
+        <div class="init_status"></div>
+
+        <div class="accuracy">
+            <!-- Simple progress bar which indicates the accuracy for the predicted class -->
+            <div class="progress" id="progress">
+                <div class="inner">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.0.1/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
+    <!-- Load the External Javascript file for web app's functionality -->
+    <script src="script.js"></script>
+
+    <script>
+        // Define the predictImage function for the Predict button
+        function predictImage() {
+            const inputElement = document.getElementById('uploadImage');
+
+            // Check if a file is selected
+            if (inputElement.files && inputElement.files[0]) {
+                const formData = new FormData();
+                formData.append('file', inputElement.files[0]);
+
+                // Send the image data to the server
+                fetch('/', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(result => {
+                        // Handle the server response here (e.g., display a message to the user)
+                        alert(result);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                alert('Please select an image before predicting.');
+            }
+        }
+
+        // Define the displayImage function to show the selected image
+        function displayImage() {
+            const inputElement = document.getElementById('uploadImage');
+            const imageElement = document.getElementById('image');
+
+            // Check if a file is selected
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Set the source of the image element to the selected image
+                    imageElement.src = e.target.result;
+                };
+
+                // Read the selected file as a data URL
+                reader.readAsDataURL(inputElement.files[0]);
+            }
+        }
+    </script>
+</body>
+
+</html>
